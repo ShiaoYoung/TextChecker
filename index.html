@@ -3,15 +3,114 @@
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Text Checker</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f1117'/%3E%3Cpath d='M17 21h30M17 32h30M17 43h18' stroke='%2388f7d4' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="./style.css" />
 </head>
 
 <body>
-  <div id="app"></div>
-  <script type="module" src="/src/main.js"></script>
+  <div id="app">
+    <main class="app-shell">
+      <section class="hero-panel">
+        <div>
+          <p class="eyebrow">Text Checker</p>
+          <h1>对比两个文本文件，自动对齐相同内容。</h1>
+          <p class="hero-copy">
+            适合大部分内容相同、只有少量差异，但相同行可能出现在不同位置的文本。
+            工具会按内容序列重新对齐，而不是死板地逐行硬比。
+          </p>
+        </div>
+
+        <div class="hero-actions">
+          <button id="loadSample" class="button button-primary" type="button">加载示例</button>
+          <button id="compareButton" class="button button-secondary" type="button">开始对比</button>
+          <button id="resetButton" class="button button-ghost" type="button">重置</button>
+        </div>
+      </section>
+
+      <section class="toolbar" aria-label="比较选项">
+        <label class="check-option">
+          <input id="ignoreTrim" type="checkbox" checked />
+          <span>忽略每行首尾空白</span>
+        </label>
+        <p class="toolbar-hint">按行做内容对齐，最适合“整体相似、局部有改动或行位置偏移”的文本。</p>
+        <p id="summary" class="summary-text">请先输入文本或上传两个文件。</p>
+      </section>
+
+      <section class="editor-grid">
+        <article class="editor-card">
+          <div class="card-head">
+            <div>
+              <p class="card-label">文件 A</p>
+              <h2>原始内容</h2>
+            </div>
+            <label class="upload-button">
+              <input id="fileA" type="file" accept=".txt,.md,.csv,.log,.json,.yaml,.yml" />
+              <span>上传文件</span>
+            </label>
+          </div>
+          <p id="fileALabel" class="file-meta">未选择文件</p>
+          <textarea id="textA" spellcheck="false" placeholder="在这里粘贴第一份文本，或上传文件。"></textarea>
+        </article>
+
+        <article class="editor-card">
+          <div class="card-head">
+            <div>
+              <p class="card-label">文件 B</p>
+              <h2>对比内容</h2>
+            </div>
+            <label class="upload-button">
+              <input id="fileB" type="file" accept=".txt,.md,.csv,.log,.json,.yaml,.yml" />
+              <span>上传文件</span>
+            </label>
+          </div>
+          <p id="fileBLabel" class="file-meta">未选择文件</p>
+          <textarea id="textB" spellcheck="false" placeholder="在这里粘贴第二份文本，或上传文件。"></textarea>
+        </article>
+      </section>
+
+      <section class="result-card" aria-live="polite">
+        <div class="result-head">
+          <div>
+            <p class="card-label">结果视图</p>
+            <h2>差异明细</h2>
+          </div>
+          <div class="result-tools">
+            <div class="legend">
+              <span class="legend-item same">相同</span>
+              <span class="legend-item replace">替换</span>
+              <span class="legend-item delete">仅 A</span>
+              <span class="legend-item insert">仅 B</span>
+            </div>
+            <div class="filter-group" aria-label="差异筛选">
+              <button class="filter-chip is-active" type="button" data-filter="equal">相同</button>
+              <button class="filter-chip is-active" type="button" data-filter="replace">替换</button>
+              <button class="filter-chip is-active" type="button" data-filter="delete">仅 A</button>
+              <button class="filter-chip is-active" type="button" data-filter="insert">仅 B</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="diff-table" role="table" aria-label="文本差异结果">
+          <div class="diff-header" role="rowgroup">
+            <div role="row" class="diff-row diff-row-header">
+              <div role="columnheader">A 行号</div>
+              <div role="columnheader">A 内容</div>
+              <div role="columnheader">状态</div>
+              <div role="columnheader">B 行号</div>
+              <div role="columnheader">B 内容</div>
+            </div>
+          </div>
+          <div id="diffBody" class="diff-body" role="rowgroup">
+            <div class="empty-state">点击“开始对比”后，这里会显示自动对齐后的差异结果。</div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="./script.js"></script>
+  <footer class="site-footer">Designed by Artificial Intelligence</footer>
 </body>
-<footer class="site-footer">Designed by Artificial Intelligence</footer>
 
 </html>
